@@ -4,13 +4,30 @@ import os
 import openai
 from dotenv import load_dotenv
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
+
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:5173"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/")
 def chat(message: str = Body(...)):
+    import pdb; pdb.set_trace()
     return chatbot(message)
 
 def chatbot(message: str):
