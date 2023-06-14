@@ -9,7 +9,7 @@ function App() {
   const defaultChats: Chat[] = [
     {sender: 'bot', msg: "Hello it's ChatBot - Feel free to ask me!"},
   ]
-  const [chats, setChats] = useState(defaultChats)
+  const [chats] = useState(defaultChats)
   const [prompt, setPrompt] = useState('')
 
   const bubbleSideClassName = (sender: string) => {
