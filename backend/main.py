@@ -5,6 +5,7 @@ import openai
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -27,7 +28,6 @@ app.add_middleware(
 
 @app.post("/")
 def chat(message: str = Body(...)):
-    import pdb; pdb.set_trace()
     return chatbot(message)
 
 def chatbot(message: str):
@@ -47,3 +47,6 @@ def chatbot(message: str):
 
     # Print the chatbot's reply
     return response['choices'][0]['message']['content']
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
