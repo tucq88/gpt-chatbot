@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 openai = "*"
 python-dotenv = "*"
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
 
 [dev-packages]
 
