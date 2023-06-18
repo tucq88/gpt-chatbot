@@ -6,11 +6,7 @@ export type Chat = {
   msg: string
 }
 export default function Home() {
-  const defaultChats: Chat[] = [
-    { sender: 'bot', msg: "Hello it's ChatBot - Feel free to ask me!" },
-    { sender: 'bot', msg: 'What is your question for me today?' },
-    { sender: 'you', msg: "Hola what's your name?" },
-  ]
+  const defaultChats: Chat[] = [{ sender: 'bot', msg: "Hello it's ChatBot - Ask me anything!" }]
   const [chats] = useState(defaultChats)
   const [prompt, setPrompt] = useState('')
 
@@ -32,32 +28,33 @@ export default function Home() {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': '*',
         'Access-Control-Allow-Credentials': 'true',
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
       },
     }
 
     axios
-      .post('/api/chat', { message: prompt }, axiosConfig)
+      .post('/api/completion', { prompt: prompt }, axiosConfig)
       .then((response) => {
         chats.push({ sender: 'you', msg: prompt })
-        chats.push({ sender: 'bot', msg: response.data })
+        chats.push({ sender: 'bot', msg: response.data.result })
       })
       .finally(() => setPrompt(''))
   }
 
   return (
-    <div className="grid">
-      <section className="w-full">
+    <div className="p-8 flex justify-center">
+      <div></div>
+      <section className="basic-1/2">
         {chats.map((chat, index) => (
           <div className={bubbleSideClassName(chat.sender)} key={index}>
             <div className={bubbleColorClassName(chat.sender)}>{chat.msg}</div>
           </div>
         ))}
       </section>
+      <div></div>
 
-      <hr />
-
-      <div className="min-w-0 flex-1">
+      {/* <div className="w-6/12">
+        <hr />
         <form action="#" className="relative" onSubmit={(e) => e.preventDefault()}>
           <div className="form-control">
             <br />
@@ -73,7 +70,7 @@ export default function Home() {
             Submit
           </button>
         </form>
-      </div>
+      </div> */}
     </div>
   )
 }
